@@ -1,16 +1,6 @@
-So the idea remains: On the fly neural nets.
-    *Get an excel import
-    (Work with prediction models only)
-    *Let the user chose predictable colums
-    *Let the user remove colums that are not needed for the net, dates, sno
-    *Do a shapley test if the columns exceed 20
-    *Allow the user to create the neural net(later)
-    *Package everything and run the neural net
-    *Get the final h5 file, ask the user if the want to test a file.
-    *User uploads test file(check if it different from the inital uploads, matching colums, prediction variable not present, run the model)
-    *Get visulaization, if not correct let the user customize their nets
+Heston Numerical Solution:
 
-This is made for people who have some knowledge of neural nets, BA, DA, PA. 
+    Learn what everything means
+    Learn how we got to the "semi-analytical solution"
+    How do we do numerical integration
 
-    
-    

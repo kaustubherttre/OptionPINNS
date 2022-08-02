@@ -1,6 +1,0 @@
-Heston Numerical Solution:
-
-    Learn what everything means
-    Learn how we got to the "semi-analytical solution"
-    How do we do numerical integration
-

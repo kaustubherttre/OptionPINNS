@@ -2,29 +2,50 @@ from math import *
 import numpy as np
 import pandas as pd
 
+# The mesh is defined as bt S and T, S is defined on the Y-axis and T is given on the x axis. 
+# T
+
+#aa=0.5*dt*(sigma*sigma*(1:N-2).*(1:N-2)-r*(1:N-2))';
+#bb=1-dt*(sigma*sigma*(1:N-2).*(1:N-2)+r)';
+#cc=0.5*dt*(sigma*sigma*(1:N-2).*(1:N-2)+r*(1:N-2))';
+#v(2:N-1,i)=bb.*v(2:N-1,i-1)+cc.*v(3:N,i-1)+aa.*v(1:N-2,i-1)
 class BSNumerical:
-    def __init__(self, Smin, Smax, K, T, r, sigma):
-        N = 160
-        self.Smin = 0
-        self.Smax = 100
-        self.K = 10
-        self.T = 1
-        self.r = 0.2
-        self.sigma = 0.25
-        self.N = N #number of shares
-        self.M = 1600 #time points
+    def __init__(self, Smin, Smax, K, T, r, sigma, n_shares, n_time):
+        self.Smin = Smin
+        self.Smax = Smax
+        self.K = K
+        self.T = T
+        self.r = r
+        self.sigma = sigma
+        self.N = n_shares #number of shares
+        self.M = n_time #time points
         self.dt = (self.T/self.M)
         self.dS = (self.Smin + self.Smax)/self.N
         self.V = [[0 for i in range(self.N)] for i in range(self.M)]
-        def define_initial_conditions(self, Smin, K, N, V, dS):
+        
+        def initial_boundry_conditions(self, Smin, K, N, M, V, dS, dt):
             for i in range(1,N):
-                V[1][i] =  max(i*dS - K, 0)
+                for j in range( M):
+                    V[i-1][0] =  max(Smin+(i-1)*dS - K, 0)
+                    V[0][j-1] = 0 
+                    V[N-1][j] = (Smin + (N-1)*dS) - K*exp(-r * (j) * dt )
             return V
-        self.iniV = define_initial_conditions(self, Smin, K, N, V, dS)
-
+        self.mat = initial_boundry_conditions(self, Smin, K, self.N, self.M, self.V, self.dS, self.dt)
+        
+        def numerical_equation_helper( dt, sigma, r, N):
+            t_1, t_2, t_3 = [], [], []
+            for i in range(1,N-1):
+                t_1.append(0.5 * dt * (pow(sigma,2)*pow(i,2)-r*(i)))
+                t_2.append(1 - dt*(pow(sigma,2)*pow(i,2) + r))
+                t_3.append(0.5*dt*(pow(sigma,2)*pow(i,2)+r*i))
+            return t_1, t_2, t_3
+        self.t_1, self.t_2, self.t_3  = numerical_equation_helper(self.dt,self.sigma,self.r,self.N)
+        def finite_difference_mat(N, M, t_1, t_2, t_3, mat):
+            for i in range(1,M):
+                pass
 
 if __name__ == '__main__':
-    model = BSNumerical(0,100,10,1,0.2,0.5)
-    print(model.iniV)
+    model = BSNumerical(0,20,10,1,0.2,0.25, 10, 10)
+    print(model.t_1)
 
 

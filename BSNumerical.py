@@ -21,15 +21,16 @@ class BSNumerical:
         self.M = n_time #time points
         self.dt = (self.T/self.M)
         self.dS = (self.Smin + self.Smax)/self.N
-        self.V = [[0 for i in range(self.N)] for i in range(self.M)]
+        self.V = np.zeros((self.N, self.M))
         
         def initial_boundry_conditions(self, Smin, K, N, M, V, dS, dt):
             for i in range(1,N):
-                for j in range( M):
-                    V[i-1][0] =  max(Smin+(i-1)*dS - K, 0)
-                    V[0][j-1] = 0 
-                    V[N-1][j] = (Smin + (N-1)*dS) - K*exp(-r * (j) * dt )
+                for j in range(1,M):
+                    V[i,0] =  max(Smin+(i)*dS - K, 0)
+                    V[0, j-1] = 0 
+                    V[N-1,j] = (Smin + (N-1)*dS) - K*exp(-r * (j) * dt )
             return V
+            
         self.mat = initial_boundry_conditions(self, Smin, K, self.N, self.M, self.V, self.dS, self.dt)
         
         def numerical_equation_helper( dt, sigma, r, N):
@@ -38,14 +39,18 @@ class BSNumerical:
                 t_1.append(0.5 * dt * (pow(sigma,2)*pow(i,2)-r*(i)))
                 t_2.append(1 - dt*(pow(sigma,2)*pow(i,2) + r))
                 t_3.append(0.5*dt*(pow(sigma,2)*pow(i,2)+r*i))
-            return t_1, t_2, t_3
+            return np.array(t_1), np.array(t_2), np.array(t_3)
         self.t_1, self.t_2, self.t_3  = numerical_equation_helper(self.dt,self.sigma,self.r,self.N)
         def finite_difference_mat(N, M, t_1, t_2, t_3, mat):
-            for i in range(1,M):
-                pass
-
+            #v(2:N-1,i)=bb.*v(2:N-1,i-1)+cc.*v(3:N,i-1)+aa.*v(1:N-2,i-1)
+            
+            for i in range(1, N-1):
+                for j in range(1,M):
+                    mat[i+1,j-1] = np.dot(mat[1:N-1, j-1], t_2) 
+            return mat
+        self.matrix = finite_difference_mat(self.N, self.M, self.t_1, self.t_2, self.t_3, self.mat)
 if __name__ == '__main__':
-    model = BSNumerical(0,20,10,1,0.2,0.25, 10, 10)
-    print(model.t_1)
+    model = BSNumerical(0,20,10,1,0.2,0.25, 5, 5)
+    print(model.mat)
 
 

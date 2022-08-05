@@ -44,17 +44,13 @@ class BSNumerical:
             return np.fliplr(mat)
         
         self.matrix = finite_difference_mat(self.N, self.M, self.t_1, self.t_2, self.t_3, self.mat)
-        def handlePlots(matrix, M):
-            plt.plot(matrix[:,1], label = 't = 0')#t = 0
-            plt.plot(matrix[:,M-1], label = 't = T')
-            plt.legend()
-            plt.show()
-        handlePlots(self.matrix, self.M)
-if __name__ == '__main__':
-    model = BSNumerical(0,20,10,1,0.2,0.25, 100, 1000)
-    print(model)
-    #sns.scatterplot()
-    #mat = np.fliplr(model.matrix)
+        # def handlePlots(matrix, M):
+        #     plt.plot(matrix[:,1], label = 't = T at BSNumerical')#t = 0
+        #     #plt.plot(matrix[:,M-1], label = 't = T')
+        #     plt.legend()
+        #     plt.show()
+        # handlePlots(self.matrix, self.M)
+
     
     
 

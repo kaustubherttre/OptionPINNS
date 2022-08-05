@@ -18,4 +18,4 @@
 
 1. Volatility Modelling(OE process)
 2. 3D finite difference schemes
-3. American Options BS
+3. American Options BS(FD Schemes)

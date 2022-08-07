@@ -1,6 +1,6 @@
 # Option Pricing with Physics Informed Neural Networks
 
-This repository includes solving Option Pricing Models using Vanilla Python, minimizing the use of external libraries. We have already provided a solution for BlackScholes solving the PDE numerically and comparing with the analyical solution. The next step is to do Heston under static model params and then doing it with model caliberation. This projects aim to make code more readable, rather than having heavy and complex functions. All resources in ./references/ 
+This repository includes solving Option Pricing Models using Vanilla Python, minimizing the use of external libraries. We have already provided a solution for BlackScholes solving the PDE numerically and comparing with the analyical solution. The next step is to do Heston under static model params and then doing it with model calibration. This projects aim to make code more readable, rather than having heavy and complex functions. All resources in ./references/ 
 
 ## TODO
 

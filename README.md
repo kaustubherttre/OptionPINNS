@@ -1,5 +1,7 @@
 # Option Pricing with Physics Informed Neural Networks
 
+This repository includes solving Option Pricing Models using Vanilla Python, minimizing the use of external libraries. We have already provided a solution for BlackScholes solving the PDE numerically and comparing with the analyical solution. The next step is to do Heston under static model params and then doing it with model caliberation. This projects aim to make code more readable, rather than having heavy and complex functions. All resources in ./references/ 
+
 ## TODO
 
 1. Black-Scholes PINNS
@@ -19,3 +21,5 @@
 1. Volatility Modelling(OE process)
 2. 3D finite difference schemes
 3. American Options BS(FD)
+4. Try CPython
+

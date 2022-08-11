@@ -1,4 +1,4 @@
-import math 
+from math import *
 import scipy.stats as ss 
 import numpy as np 
 import matplotlib.pyplot as plt
@@ -29,13 +29,25 @@ class HestonSA:
         def d_var(rho, lamda, u, i, kappa):
             aa = (rho*lamda*u*i - kappa)
             bb = lamda**2*(i*u+u**2)
-            return pow((aa**2 + bb), 0.5)
+            return (aa**2 + bb) ** 0.5
 
         def g_var(kappa, rho, lamda, i, u):
             d = d_var(rho, lamda, u, i, kappa)
             g_num = kappa - rho*lamda*i*u - d
             g_den = kappa - rho*lamda*i*u + d
-            return g_num/g_den
+            return g_num, g_den, g_num/g_den
+        def phi_function(kappa, rho, lamda, i, u, T, V_0, S, r):
+            exp_1, exp_2 = exponential_terms(self)
+            d = d_var(rho, lamda, u, i, kappa)
+            g_num, g_den, g = g_var(rho, lamda, u, i, kappa)
+            aa_g = (1 - g*np.exp(-d*T))/(1-g)
+            aa = np.exp(r*T) * S**(i*u) * (aa_g**exp_1)
+            bb_inner_exp = (1 - np.exp(d*T))/(1 - g*np.exp(d*T))
+            bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
+
+            return aa*bb
+
+
 
         #def phi_function(self)
         self.d = d_var(self.rho, self.lamda, 100, self.i, self.kappa)
@@ -45,7 +57,7 @@ class HestonSA:
             d_var_array = []
             for j in range(1, time_iters):
                 u = j * du
-                d_var_array.append(d_var(self.rho, self.lamda, u, self.i, self.kappa ))
+                d_var_array.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))
             return d_var_array
         self.arr = heston_discrete(self, self.time_iters, self.int_iters)
 
@@ -60,7 +72,16 @@ if __name__ == '__main__':
     ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
     OptimParams = {"kappa": 1.5768, "theta": 0.0398, "lamda": 0.575, "rho": 0.5711}
     model = HestonSA(ModelParams, OptimParams)
-    #print(model.expo)
+    print(model.arr)
     #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
-    a = np.array(model.arr)
+    a = np.array(model.arr)[:50]
+    for x in range(len(a)):
+        plt.plot([0,a[x].real],[0,a[x].imag],'ro-',label='python')
+    limit=np.max(np.ceil(np.absolute(a))) # set limits for axis
+    plt.xlim((-limit,limit))
+    plt.ylim((-limit,limit))
+    plt.ylabel('Imaginary')
+    plt.xlabel('Real')
+    plt.show()
+
     

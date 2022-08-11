@@ -27,10 +27,17 @@ class HestonSA:
             exp_2 = (self.theta*self.kappa*self.T)/pow(self.lamda, 2)
             return exp_1, exp_2
         
-        def heston_discrete(self):
+        def heston_discrete(self, N, asset_iters, time_iters):
 
             exp1, exp2 = exponential_terms(self)
-            return exp1
+            delta_ = asset_iters/time_iters
+            for j in range(1, N):
+                #integration steps
+                u_2 = j*delta_
+                u_1 = complex(u_2, -1)
+
+
+
         self.expo = heston_discrete(self)
     #print(self.kappa)
 

@@ -47,11 +47,31 @@ class HestonSA:
             bb_inner_exp = (1 - np.exp(d*T))/(1 - g*np.exp(d*T))
             bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
             return aa*bb
+        
+        def imag_terms(i, u, K):
+            return i*u*(K**(i*u))
+        def integration_term(self, time_iters, int_iters, r, T, i, K):
+            du = int_iters/time_iters
+            phi_arr1, phi_arr2 = [], []
+            for j in range(1, time_iters):
+                u1 = complex(-1, du*j)
+                u2 = du * j
+                phi1 = phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r)
+                phi2 = phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r)
+                phi_arr1.append(phi1)
+                phi_arr2.append(phi2)
+
+            return phi_arr1, phi_arr2
+
+
+
 
         def heston_discrete(self, time_iters, int_iters):
             du = int_iters/time_iters
             phi_func = []
             g_var_func = []
+            aa = 0.5 * (self.S - self.K*np.exp(-self.r*self.T))
+
             for j in range(1, time_iters):
                 u = j * du
                 phi_func.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))

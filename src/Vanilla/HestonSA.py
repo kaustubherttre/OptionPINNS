@@ -44,8 +44,8 @@ class HestonSA:
             aa = np.exp(r*T) * S**(i*u) * (aa_g**exp_1)
             bb_inner_exp = (1 - np.exp(d*T))/(1 - g*np.exp(d*T))
             bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
-
             return aa*bb
+
 
 
 
@@ -54,12 +54,15 @@ class HestonSA:
 
         def heston_discrete(self, time_iters, int_iters):
             du = int_iters/time_iters
-            d_var_array = []
+            phi_func = []
+            g_var_func = []
             for j in range(1, time_iters):
                 u = j * du
-                d_var_array.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))
-            return d_var_array
-        self.arr = heston_discrete(self, self.time_iters, self.int_iters)
+                phi_func.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))
+                g_var_func.append(g_var(self.rho, self.lamda, 100, self.i, self.kappa)
+)
+            return phi_func, g_var_func
+        self.phi_func, self.g_var_func = heston_discrete(self, self.time_iters, self.int_iters)
 
 
 
@@ -72,9 +75,9 @@ if __name__ == '__main__':
     ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
     OptimParams = {"kappa": 1.5768, "theta": 0.0398, "lamda": 0.575, "rho": 0.5711}
     model = HestonSA(ModelParams, OptimParams)
-    print(model.arr)
+    print(model.phi_func)
     #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
-    a = np.array(model.arr)[:50]
+    a = np.array(model.g_var_func)[:50]
     for x in range(len(a)):
         plt.plot([0,a[x].real],[0,a[x].imag],'ro-',label='python')
     limit=np.max(np.ceil(np.absolute(a))) # set limits for axis

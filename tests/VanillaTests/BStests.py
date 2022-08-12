@@ -1,7 +1,7 @@
 #Add tests here
 #import module
 import sys
-sys.path.insert(0, '../src/')
+sys.path.insert(0, '../../src/Vanilla/')
 from  BSNumerical import BSNumerical
 from BSAnalytical import BSAnalytical
 import matplotlib.pyplot as plt

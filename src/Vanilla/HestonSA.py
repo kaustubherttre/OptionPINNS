@@ -26,6 +26,7 @@ class HestonSA:
             exp_1 = (-2*self.theta*self.kappa)/pow(self.lamda, 2)
             exp_2 = (self.theta*self.kappa*self.T)/pow(self.lamda, 2)
             return exp_1, exp_2
+
         def d_var(rho, lamda, u, i, kappa):
             aa = (rho*lamda*u*i - kappa)
             bb = lamda**2*(i*u+u**2)
@@ -36,6 +37,7 @@ class HestonSA:
             g_num = kappa - rho*lamda*i*u - d
             g_den = kappa - rho*lamda*i*u + d
             return g_num, g_den, g_num/g_den
+
         def phi_function(kappa, rho, lamda, i, u, T, V_0, S, r):
             exp_1, exp_2 = exponential_terms(self)
             d = d_var(rho, lamda, u, i, kappa)
@@ -46,12 +48,6 @@ class HestonSA:
             bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
             return aa*bb
 
-
-
-
-        #def phi_function(self)
-        self.d = d_var(self.rho, self.lamda, 100, self.i, self.kappa)
-
         def heston_discrete(self, time_iters, int_iters):
             du = int_iters/time_iters
             phi_func = []
@@ -59,15 +55,11 @@ class HestonSA:
             for j in range(1, time_iters):
                 u = j * du
                 phi_func.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))
-                g_var_func.append(g_var(self.rho, self.lamda, 100, self.i, self.kappa)
-)
+                x, y, g = g_var(self.rho, self.lamda, u, self.i, self.kappa)
+                g_var_func.append(g)
             return phi_func, g_var_func
+        
         self.phi_func, self.g_var_func = heston_discrete(self, self.time_iters, self.int_iters)
-
-
-
-
-
         #self.expo = heston_discrete(self)
     #print(self.kappa)
 
@@ -75,9 +67,10 @@ if __name__ == '__main__':
     ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
     OptimParams = {"kappa": 1.5768, "theta": 0.0398, "lamda": 0.575, "rho": 0.5711}
     model = HestonSA(ModelParams, OptimParams)
-    print(model.phi_func)
+    #print(model.phi_func)
     #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
-    a = np.array(model.g_var_func)[:50]
+    a = np.array(model.phi_func)[:100]
+    print(a)
     for x in range(len(a)):
         plt.plot([0,a[x].real],[0,a[x].imag],'ro-',label='python')
     limit=np.max(np.ceil(np.absolute(a))) # set limits for axis

@@ -44,42 +44,28 @@ class HestonSA:
             g_num, g_den, g = g_var(rho, lamda, u, i, kappa)
             aa_g = (1 - g*np.exp(-d*T))/(1-g)
             aa = np.exp(r*T) * S**(i*u) * (aa_g**exp_1)
-            bb_inner_exp = (1 - np.exp(d*T))/(1 - g*np.exp(d*T))
+            bb_inner_exp = (1 - np.exp(d*T))
             bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
+            print(bb_inner_exp)
             return aa*bb
         
         def imag_terms(i, u, K):
             return i*u*(K**(i*u))
         def integration_term(self, time_iters, int_iters, r, T, i, K):
             du = int_iters/time_iters
-            phi_arr1, phi_arr2 = [], []
+            aa = 0.5 * (self.S - self.K*np.exp(-self.r*self.T))
+            price = 0
             for j in range(1, time_iters):
                 u1 = complex(-1, du*j)
                 u2 = du * j
-                phi1 = phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r)
-                phi2 = phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r)
-                phi_arr1.append(phi1)
-                phi_arr2.append(phi2)
+                phi1 = np.exp(r*T) * phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r)/imag_terms(i, u2, K)
+                phi2 = (K * phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r))/imag_terms(i, u2, K)
+                price += aa+ ((phi1-phi2)*du)/np.pi
+                #print(price)
+            return np.real(price)
 
-            return phi_arr1, phi_arr2
+        self.final_price = integration_term(self, self.time_iters, self.int_iters, self.r, self.T, self.i, self.K)
 
-
-
-
-        def heston_discrete(self, time_iters, int_iters):
-            du = int_iters/time_iters
-            phi_func = []
-            g_var_func = []
-            aa = 0.5 * (self.S - self.K*np.exp(-self.r*self.T))
-
-            for j in range(1, time_iters):
-                u = j * du
-                phi_func.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u, self.T, self.V_0, self.S, self.r))
-                x, y, g = g_var(self.rho, self.lamda, u, self.i, self.kappa)
-                g_var_func.append(g)
-            return phi_func, g_var_func
-        
-        self.phi_func, self.g_var_func = heston_discrete(self, self.time_iters, self.int_iters)
         #self.expo = heston_discrete(self)
     #print(self.kappa)
 
@@ -89,15 +75,6 @@ if __name__ == '__main__':
     model = HestonSA(ModelParams, OptimParams)
     #print(model.phi_func)
     #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
-    a = np.array(model.phi_func)[:100]
+    a = model.final_price
     print(a)
-    for x in range(len(a)):
-        plt.plot([0,a[x].real],[0,a[x].imag],'ro-',label='python')
-    limit=np.max(np.ceil(np.absolute(a))) # set limits for axis
-    plt.xlim((-limit,limit))
-    plt.ylim((-limit,limit))
-    plt.ylabel('Imaginary')
-    plt.xlabel('Real')
-    plt.show()
-
-    
+        

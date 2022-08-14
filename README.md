@@ -6,15 +6,16 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 
 1. Black-Scholes PINNS
 2. Black-Scholes PINN testing
-3. Heston semi-Analytical
-4. Heston semi-Analytical Testing 
+3. Heston semi-Analytical :: DONE
+4. Heston semi-Analytical Testing :: DONE 
 
 ## Tasks Completed
 
 1. Black-Scholes Numerical
 2. Black-Scholes Analytical
 3. Black Scholes full testing(Results are good!)
-
+4. Heston semi-Analytical
+5. Heston semi-Analytical Testing
 
 ## Future Ideas
 

@@ -40,47 +40,33 @@ class HestonSA:
             g_den = kappa - rho*lamda*i*u + d
             return g_num, g_den, g_num/g_den
 
-        def phi_function(kappa, rho, lamda, i, u, T, V_0, S, r):
+        def phi_function(kappa, rho, lamda, i, u, T, V_0, S, r, K):
             exp_1, exp_2 = exponential_terms(self)
             d = d_var(rho, lamda, u, i, kappa)
-            
             g_num, g_den, g = g_var(kappa, rho, lamda, u, i,d)
-            print(g)
-            aa_g = (1 - g*np.exp(-d*T))/(1-g)
-            aa = np.exp(r*T) * S**(i*u) * (aa_g**exp_1)
-            bb_inner_exp = (1 - np.exp(d*T))
-            bb = np.exp(exp_2*g_num + ((V_0/lamda**2) *g_den*bb_inner_exp))
-            return aa*bb
-        
-        def imag_terms(i, u, K):
-            return i*u*(K**(i*u))
+            p_1 = (1 - g*np.exp(-d*T))/(1-g)
+            p_2 = np.exp(u*i*(np.log(S/K) + r*T))
+            phi_pre = p_2 * p_1**exp_1
+            phi = phi_pre*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
+            return phi
+
         def integration_term(self, time_iters, int_iters, r, T, i, K):
             du = int_iters/time_iters
-            aa = 0.5 * (self.S - self.K*np.exp(-self.r*self.T))
             price = 0
-            phi1 = 0
             for j in range(1, time_iters):
-                
                 u2 = du * j
                 u1 = complex(u2, -1)
-                phi1 = phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r)
-                #phi1 = np.exp(r*T) * phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r)/imag_terms(i, u2, K)
-                
-                #phi2 = (K * phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r))/imag_terms(i, u2, K)
-                #price += aa+ ((phi1-phi2)*du)/np.pi
-                #print(price)
-            return phi1
+                phi1 = phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r, self.K)
+                phi2 = phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r,self.K)
+                price += ((phi1 - phi2)/(u2*i))*du
+            return K*np.real((self.S/K-np.exp(-r*T))/2+price/np.pi)
 
         self.final_price = integration_term(self, self.time_iters, self.int_iters, self.r, self.T, self.i, self.K)
 
-        #self.expo = heston_discrete(self)
-    #print(self.kappa)
 
 if __name__ == '__main__':
-    ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 100, "int_iters": 10}
-    OptimParams = {"kappa": 1.5768, "theta": 0.0398, "lamda": 0.575, "rho": -0.5711}
+    ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
+    OptimParams = {"kappa": 1.5, "theta": 0.03, "lamda": 0.5, "rho": -0.5}
     model = HestonSA(ModelParams, OptimParams)
-    #print(model.phi_func)
-    #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
     a = model.final_price
-    
+    print(a)

@@ -60,6 +60,21 @@ class HestonSA:
                 phi2 = phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r,self.K)
                 price += ((phi1 - phi2)/(u2*i))*du
             return K*np.real((self.S/K-np.exp(-r*T))/2+price/np.pi)
+        
+        def plotting_function(self, time_iters, int_iters):
+            du = int_iters/time_iters
+            price = []
+            phi_1 = []
+            phi_2 = []
+            for j in range(1, time_iters):
+                u2 = du * j
+                u1 = complex(u2, -1)
+                phi_1.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u1, self.T, self.V_0, self.S, self.r, self.K))
+                phi_2.append(phi_function(self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r,self.K))
+            return phi_1, phi_2
+        self.phi_1, self.phi_2 = plotting_function(self, self.time_iters, self.int_iters)
+
+
 
         self.final_price = integration_term(self, self.time_iters, self.int_iters, self.r, self.T, self.i, self.K)
 

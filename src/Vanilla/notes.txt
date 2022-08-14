@@ -1,0 +1,20 @@
+Problems is with the phi function
+    problems with d_var
+
+
+Exp function is correct
+
+Errors Found:
+
+the complex function had reverse arguments
+the vaule of rho is negative
+g_var had the wrong assignment
+g_var fixed
+
+Thing that work:
+d_var
+exp_terms
+g_var
+
+
+

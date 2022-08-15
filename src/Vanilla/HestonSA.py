@@ -16,10 +16,10 @@ class HestonSA:
         self.r = ModelParams["r"] #risk free rate
         self.time_iters = ModelParams["time_iters"]
         self.int_iters = ModelParams["int_iters"]
-        self.kappa = OptimParams["kappa"]
-        self.theta = OptimParams["theta"]
-        self.lamda = OptimParams["lamda"]
-        self.rho = OptimParams["rho"]
+        self.kappa = OptimParams["kappa"] #mean reverison rate
+        self.theta = OptimParams["theta"] #long term variance
+        self.lamda = OptimParams["lamda"] # variance of volatility
+        self.rho = OptimParams["rho"] # correlation coff
         self.i = complex(0,1)
 
         def exponential_terms(self):

@@ -79,9 +79,4 @@ class HestonSA:
         self.final_price = integration_term(self, self.time_iters, self.int_iters, self.r, self.T, self.i, self.K)
 
 
-if __name__ == '__main__':
-    ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
-    OptimParams = {"kappa": 1.5, "theta": 0.03, "lamda": 0.5, "rho": -0.5}
-    model = HestonSA(ModelParams, OptimParams)
-    a = model.final_price
-    print(a)
+

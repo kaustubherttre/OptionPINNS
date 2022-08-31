@@ -42,7 +42,7 @@ class BSAnalyticalAbs:
         self.prices = vanila_call(self.S, self.K, self.r, self.T)
 
 if __name__ == '__main__':
-    model_ana_abs =  BSAnalyticalAbs(95,100,0.03,2, 0.1)
+    model_ana_abs =  BSAnalyticalAbs(95,100,0.03,2, 0.25)
     print(model_ana_abs.prices)
 
             

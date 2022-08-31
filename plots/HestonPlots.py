@@ -17,15 +17,15 @@ def plotting_function(a):
 if __name__ == '__main__':
     price = []
     ModelParams = {"S":95, "K": 100, "V_0": 0.1, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
-    for i in range(1,2000):
-        OptimParams = {"kappa": i/1000, "theta": 0.0398, "lamda": 0.575, "rho": 0.5711}
-        model = HestonSA(ModelParams, OptimParams)
-        print(i)
-        print(model.final_price)
-    #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
-        price.append(model.final_price)
-
-    plt.plot(price)
+    OptimParams = {"kappa": 0.5, "theta": 0.0398, "lamda": 0.25, "rho": 0.5711}
+    model = HestonSA(ModelParams, OptimParams)
+    # for i in range(1,2000):
+    #     OptimParams = {"kappa": i/1000, "theta": 0.0398, "lamda": 0.575, "rho": 0.5711}
+    #     model = HestonSA(ModelParams, OptimParams)
+    #     print(i)
+    # #print(model.d_var(ModelParams["rho"], ModelParams["lamda"],100, complex(0,1), ModelParams["kappa"]))
+    #     price.append(model.final_price)
+    print(model.final_price)
+    plt.plot(model.incP)
     plt.show()
-
 

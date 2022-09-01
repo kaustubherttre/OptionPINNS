@@ -5,14 +5,13 @@ import matplotlib.pyplot as plt
 # Defining two dicts here: ModelParams include strike, underlying, time etc. OptimParams includes mean reversion speed, corr coff etc
 #Solving this with little bit numerical, using discretization(spell check) for complex integral
 
-# ModelParams = {S, K, T, V_0, N}
-# OptimParams = {kappa, theta, lambda, rho}
+# ModelParams = {S, K, T, N}
+# OptimParams = {kappa, theta, lambda, rho, V_0}
 # This is the solution the is present in Gatheral
 class HestonSA:
     def __init__(self, ModelParams, OptimParams):
         self.S = ModelParams["S"] # Stock
         self.K = ModelParams["K"] # strike
-        self.V_0 = ModelParams["V_0"] #inital volatility
         self.T = ModelParams["T"] #time to maturity (yrs)
         self.r = ModelParams["r"] #risk free rate
         self.time_iters = ModelParams["time_iters"]
@@ -22,6 +21,7 @@ class HestonSA:
         self.lamda = OptimParams["lamda"] # variance of volatility
         self.rho = OptimParams["rho"] # correlation coff
         self.i = complex(0,1)
+        self.V_0 = OptimParams["V_0"] #inital volatility
 
         def exponential_terms(self):
             exp_1 = (-2*self.theta*self.kappa)/(self.lamda ** 2)
@@ -84,7 +84,6 @@ class HestonSAGatheral:
     def __init__(self, ModelParams, OptimParams):
         self.S = ModelParams["S"] # Stock
         self.K = ModelParams["K"] # strike
-        self.V_0 = ModelParams["V_0"] #inital volatility
         self.T = ModelParams["T"] #time to maturity (yrs)
         self.r = ModelParams["r"] #risk free rate
         self.time_iters = ModelParams["time_iters"]
@@ -94,6 +93,7 @@ class HestonSAGatheral:
         self.lamda = OptimParams["lamda"] # variance of volatility
         self.rho = OptimParams["rho"] # correlation coff
         self.i = complex(0,1)
+        self.V_0 = OptimParams["V_0"]
 
         def exponential_terms(self):
             exp_1 = (-2*self.theta*self.kappa)/(self.lamda ** 2)

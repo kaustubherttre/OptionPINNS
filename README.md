@@ -4,10 +4,10 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 
 ## TODO
 
-1. Black-Scholes PINNS
-2. Black-Scholes PINN testing
-3. Heston semi-Analytical :: DONE
-4. Heston semi-Analytical Testing :: DONE 
+1. Heston semi-Analytical :: DONE
+2. Heston semi-Analytical Testing :: DONE 
+3. Heston Optimization with Gradient Descent
+4. Setup the AAPL Dataset
 
 ## Tasks Completed
 
@@ -16,11 +16,3 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 3. Black Scholes full testing(Results are good!)
 4. Heston semi-Analytical
 5. Heston semi-Analytical Testing
-
-## Future Ideas
-
-1. Volatility Modelling(OE process)
-2. 3D finite difference schemes
-3. American Options BS(FD)
-4. Try CPython
-

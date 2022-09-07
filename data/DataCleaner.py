@@ -9,6 +9,8 @@ from scipy.stats import norm
 from scipy.optimize import brentq
 import datetime as dt
 from datetime import datetime
+import sys
+sys.path.append(0, '../data/ProcessedData')
 
 #only functional python
 # doing this on a notebook
@@ -189,7 +191,6 @@ def error_of_BS(x):
     mid = x['Mid']
     call = x['Option_Value']
     return mid - call
-
 
 
 

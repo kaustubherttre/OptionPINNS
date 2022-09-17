@@ -22,23 +22,23 @@ def applyHeston(data):
          b.append(row["Price"])
          print(index)
 
-        #  data["HestonPrices"] = Hestonmodel.final_price
     return a,b
 
 
 
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ProcessedData.csv')
-    twoRowData = data
+    twoRowData = data[:100]
     error = []
     data_ = getParams(twoRowData)
-    heston_data_ = data_.sample(frac =1)
+    heston_data_ = data_.sample(frac =1).reset_index()
     hestonPrice, OptionPrice = applyHeston(heston_data_)
     plt.plot(hestonPrice, label = "hestonPrice")
     plt.plot( OptionPrice, label = "OptionPrice" )
     for i in range(len(hestonPrice)):
         error.append(OptionPrice[i] - hestonPrice[i])
         print(i)
+    print(error)
     plt.plot(error, label = "Error")
     plt.legend()
     plt.show()

@@ -29,7 +29,7 @@ if __name__ == '__main__':
     twoRowData = data
     error = []
     data_ = getParams(twoRowData)
-    heston_data_ = data_.sample(frac =1).reset_index()
+    heston_data_ = data_
     final_data = applyHeston(heston_data_)
     print(final_data)
     final_data.to_csv('out.csv')

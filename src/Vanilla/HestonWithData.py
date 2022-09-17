@@ -18,27 +18,27 @@ def applyHeston(data):
          ModelParams = {"S": row["S"], "K": row["K"],  "T": row["T"], "r": row["r"], "time_iters": 1000, "int_iters": 100}
          OptimParams = {"kappa": 0.749131, "theta": 0.459467, "lamda":2.786400, "rho": -0.249205, "V_0": 0.062500}
          Hestonmodel = HestonSA(ModelParams, OptimParams)
-         a.append(Hestonmodel.final_price)
-         b.append(row["Price"])
+         data.loc[index, "HestonPrice"] = Hestonmodel.final_price
+         data.loc[index, "Error_in_Heston"] = row["Price"]- Hestonmodel.final_price
          print(index)
 
-    return a,b
-
-
+    return data
 
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ProcessedData.csv')
-    twoRowData = data[:100]
+    twoRowData = data
     error = []
     data_ = getParams(twoRowData)
     heston_data_ = data_.sample(frac =1).reset_index()
-    hestonPrice, OptionPrice = applyHeston(heston_data_)
-    plt.plot(hestonPrice, label = "hestonPrice")
-    plt.plot( OptionPrice, label = "OptionPrice" )
-    for i in range(len(hestonPrice)):
-        error.append(OptionPrice[i] - hestonPrice[i])
-        print(i)
-    print(error)
-    plt.plot(error, label = "Error")
-    plt.legend()
-    plt.show()
+    final_data = applyHeston(heston_data_)
+    print(final_data)
+    final_data.to_csv('out.csv')
+    # plt.plot(hestonPrice, label = "hestonPrice")
+    # plt.plot( OptionPrice, label = "OptionPrice" )
+    # for i in range(len(hestonPrice)):
+    #     error.append(OptionPrice[i] - hestonPrice[i])
+    #     print(i)
+    # print(error)
+    # plt.plot(error, label = "Error")
+    # plt.legend()
+    # plt.show()

@@ -21,7 +21,7 @@ def getData():
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv')
     t = [ 0.749131, 0.459467, 2.786400, -0.249205, 0.062500]
-    res = minimize(heston_optimization, t, tol=1e-3, method="SLSQP", options={'maxiter': 1e2})
+    res = minimize(heston_optimization, t, tol=1e-2, method="SLSQP", options={'maxiter': 1e1})
     #print(res)
     print(res)
     # print(heston_optimization(x)) 

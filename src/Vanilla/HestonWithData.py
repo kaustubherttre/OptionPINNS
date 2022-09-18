@@ -26,13 +26,12 @@ def applyHeston(data):
 
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ProcessedData.csv')
-    twoRowData = data
+    twoRowData = data[:100]
     error = []
     data_ = getParams(twoRowData)
     heston_data_ = data_
     final_data = applyHeston(heston_data_)
     print(final_data)
-    final_data.to_csv('out.csv')
     # plt.plot(hestonPrice, label = "hestonPrice")
     # plt.plot( OptionPrice, label = "OptionPrice" )
     # for i in range(len(hestonPrice)):

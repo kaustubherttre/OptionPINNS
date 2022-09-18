@@ -4,32 +4,27 @@ from HestonSA import HestonSA
 import matplotlib.pyplot as plt
 from numpy import gradient as grad
 import numpy as np
+import pandas as pd
+from scipy.optimize import minimize, broyden2, broyden1
+from scipy import optimize
 
+def heston_optimization(x):
+    ModelParams = {"S":665.00, "K": 570, "T": 0.116724, "r": 0.000587, "time_iters": 10000, "int_iters": 1000}
+    OptimParams = {"kappa": x[0], "theta": x[1], "lamda": x[2], "rho": x[3], "V_0": x[4]  }
+    Hestonmodel = HestonSA(ModelParams, OptimParams)
+    return 100.200 - Hestonmodel.final_price
 
-class HestonCaliberation:
-    def __init__(self, ModelParams):
-        self.ModelParams = ModelParams
-        def mapArray(arr):
-            return {"kappa": arr[0] , "theta": arr[1], "lamda": arr[2], "rho": arr[3]}
-    
+def getData():
+    return pd.read_csv('../../data/ProcessedData/PureOptionData.csv')
 
 
 if __name__ == '__main__':
-    ModelParams = {"S":95, "K": 100, "V_0": 0.25, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
-    model = HestonCaliberation(ModelParams)
-    print(model.array)
+    data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv')
+    t = [ 0.749131, 0.459467, 2.786400, -0.249205, 0.062500]
+    res = minimize(heston_optimization, t, tol=1e-3, method="SLSQP", options={'maxiter': 1e2})
+    #print(res)
+    print(res)
+    # print(heston_optimization(x)) 
 
 
 
-
-# class HestonCaliberation():
-#     def __init__(self, OptimParams, ModelParams):
-
-#         ModelParams = {"S":95, "K": 100, "V_0": 0.25, "T": 2, "r": 0.03, "time_iters": 10000, "int_iters": 1000}
-#         for i in range(10000,1,-1):
-#             OptimParams = {"kappa": 1.5768, "theta": i/100000, "lamda": 0.575, "rho": -0.5711}
-#             Hestonmodel = HestonSA(ModelParams, OptimParams)
-#             a.append(Hestonmodel.final_price)
-#             print(i)
-#         plt.plot(a)
-#         plt.show()

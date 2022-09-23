@@ -38,8 +38,6 @@ class HestonSA:
                 phi2 = phi_function(self, self.kappa, self.rho, self.lamda, self.i, u2, self.T, self.V_0, self.S, self.r, self.K, d2)
                 price += ((phi1 - phi2)/(u2*self.i))*self.du
             return self.K*np.real((self.S/self.K-np.exp(-self.r*self.T))/2+price/np.pi)
-
-
         def exponential_terms(self):
             exp_1 = (-2*self.theta*self.kappa)/(self.lamda ** 2)
             exp_2 = (self.theta*self.kappa*self.T)/(self.lamda ** 2)
@@ -60,10 +58,8 @@ class HestonSA:
         def phi_function(self, kappa, rho, lamda, i, u, T, V_0, S, r, K,d):
             exp_1, exp_2 = exponential_terms(self)
             g_num, g_den, g = g_var(kappa, rho, lamda, u, i,d)
-            p_1 = (1 - g*np.exp(-d*T))/(1-g)
-            p_2 = np.exp(u*i*(np.log(S/K) + r*T))
-            phi_pre = p_2 * p_1**exp_1
-            phi = phi_pre*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
+            p = np.exp(u*i*(np.log(S/K) + r*T)) *((1 - g*np.exp(-d*T))/(1-g))**exp_1
+            phi = p*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
             return phi
         self.final_price = heston_price(self)
 

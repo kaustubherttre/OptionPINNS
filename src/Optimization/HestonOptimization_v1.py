@@ -8,22 +8,42 @@ import pandas as pd
 from scipy.optimize import minimize, broyden2, broyden1
 from scipy import optimize
 
-def heston_optimization(x):
-    ModelParams = {"S":665.00, "K": 570, "T": 0.116724, "r": 0.000587, "time_iters": 10000, "int_iters": 1000}
-    OptimParams = {"kappa": x[0], "theta": x[1], "lamda": x[2], "rho": x[3], "V_0": x[4]  }
-    Hestonmodel = HestonSA(ModelParams, OptimParams)
-    return 100.200 - Hestonmodel.final_price
+data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv').head(100)
 
-def getData():
-    return pd.read_csv('../../data/ProcessedData/PureOptionData.csv')
+
+
+def error_function(x):
+    
+    kappa, theta, lamda, rho, V_0 = [param for param in x]
+    OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
+    ModelParams = {"S":data["S"], "K": data["K"], "T": data["T"], "r": data["r"], "time_iters": 10000, "int_iters": 1000}
+    error = np.sum((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
+    return error
+
+
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv')
-    t = [ 0.749131, 0.459467, 2.786400, -0.249205, 0.062500]
-    res = minimize(heston_optimization, t, tol=1e-2, method="SLSQP", options={'maxiter': 1e1})
-    #print(res)
+    
+    params = {
+        "kappa":{"x0": 3, "lb": [1e-3, 5]},
+        "theta":{"x0": 0.05, "lb": [1e-3, 1]},
+        "lamda":{"x0": 0.03, "lb": [1e-2, 1]},
+        "rho":{"x0": -0.8, "lb": [-1, 0]},
+        "V_0":{"x0": 0.1, "lb": [1e-3, 0.1]},
+    }
+    x0 = [param["x0"] for key, param in params.items()]
+    print(error_function(x0))
+    boundary = [param['lb'] for key, param in params.items()]
+
+    res = minimize(error_function, x0, tol = 1e-3, method = 'SLSQP', options = {'maxiter': 1e4}, bounds = boundary)
     print(res)
+    # kappa, theta, lamda, rho, V_0 
+
+    # t = [ 0.749131, 0.459467, 2.786400, -0.249205, 0.062500]
+    # res = minimize(heston_optimization, t, method="CG", options={'disp': True})
+    #print(res)
+    #print(data)
     # print(heston_optimization(x)) 
 
 

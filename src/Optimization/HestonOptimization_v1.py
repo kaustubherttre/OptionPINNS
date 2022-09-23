@@ -7,11 +7,22 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize, broyden2, broyden1
 from scipy import optimize
+from time import time
+
 
 data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv').head(100)
 
+def timer(func):
+    def wrapperFunction(*args, **kwargs):
+        t1 = time()
+        result = func(*args, **kwargs)
+        t2 = time()
+        print(f"Function {func.__name__} took {t2-t1}s")
+        return result
+    return wrapperFunction
 
 
+@timer
 def error_function(x):
     
     kappa, theta, lamda, rho, V_0 = [param for param in x]

@@ -1,3 +1,4 @@
+from random import random
 import sys
 sys.path.insert(0, '../../src/Vanilla/')
 from HestonSA import HestonSA
@@ -10,7 +11,7 @@ from scipy import optimize
 from time import time
 
 
-data = pd.read_csv('../../data/ProcessedData/PureOptionData.csv').head(100)
+data = pd.read_csv('../../data/ProcessedData/SortedOptions.csv').head(50)
 
 def timer(func):
     def wrapperFunction(*args, **kwargs):
@@ -27,11 +28,11 @@ def error_function(x):
     
     kappa, theta, lamda, rho, V_0 = [param for param in x]
     OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
+    print(OptimParams)
     ModelParams = {"S":data["S"], "K": data["K"], "T": data["T"], "r": data["r"], "time_iters": 10000, "int_iters": 1000}
     error = np.sum((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
+    print(error)
     return error
-
-
 
 
 if __name__ == '__main__':

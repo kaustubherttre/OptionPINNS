@@ -1,8 +1,3 @@
-#Notes
+How to make a caliberation engine.
 
-The two main problems with heston are: 
-
-1. Model Calib
-2. Complex Integration
-
-Optimization is needed, static params don't do so well.
+input is supposed to be model params, that are stock price, strike, 

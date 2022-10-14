@@ -12,4 +12,4 @@ if __name__ == "__main__":
 
     #remove values from main ds of testing ds
     
-    pd.read_csv("ProcessedData/ValueAddedOptions.csv").sample(10000).to_csv('Testing.csv')
+    pd.read_csv("ProcessedData/SortedOptions.csv").sort_values(by = 'T').to_csv("TimeSorted.csv")

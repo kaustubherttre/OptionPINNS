@@ -17,7 +17,7 @@ def applyHeston(data):
     
     for index, row in data.iterrows():
          ModelParams = {"S": row["S"], "K": row["K"],  "T": row["T"], "r": row["r"], "time_iters": 1000, "int_iters": 100}
-         params = [1.64918339,  0.31554717,  0.02259329, -0.45239198,  0.08777303]
+         params = [2.973854  ,  0.86279981,  1.        , -1.        ,  0.07486076]
 
          OptimParams = {"kappa": params[0], "theta":params[1], "lamda":params[2], "rho": params[3], "V_0": params[4]}
          #OptimParams = {'kappa': 1.792843050998499, 'theta': 0.31552779855223334, 'lamda': 0.022022107211539868, 'rho': -0.5553479504516986, 'V_0': 0.0892181302056993}
@@ -35,15 +35,15 @@ def applyHeston(data):
     return data
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/SortedOptions.csv')
-    twoRowData = data[20000:20050]
+    data = pd.read_csv('../../data/ProcessedData/TimeSorted.csv')
+    twoRowData = data[20500:20550]
     print(data.columns)
     print(twoRowData[["Price", 'T', 'S']])
     error = []
     final_data = applyHeston(twoRowData)
     print(final_data)
-    print(final_data[["HestonPrice", "S", "K", "T", "Error_in_Heston"]])
-    fig = px.line(final_data, x=final_data.index, y=['HestonPrice','Price','Error_in_Heston','Diff'], title='Optimization')
+    print(final_data[["HestonPrice", "S", "Price", "K", "Error_in_Heston"]])
+    fig = px.line(final_data, x=final_data.index, y=['HestonPrice','Price','Error_in_Heston'], title='Optimization')
     fig.show()
     # plt.plot(final_data["HestonPrice"], label = "hestonPrice")
     # plt.plot(final_data["Price"], label = "OptionPrice")

@@ -11,7 +11,7 @@ from scipy import optimize
 from time import time
 
 
-data = pd.read_csv('../../data/ProcessedData/SortedOptions.csv').shift()[20000:20050]
+data = pd.read_csv('../../data/ProcessedData/TimeSorted.csv')[:100]
 print(data)
 def timer(func):
     def wrapperFunction(*args, **kwargs):

@@ -9,6 +9,7 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 3. Penalty based Optimization
 4. Feller Condition implementation :: Done, testing 
 5. Lewis' "Well Behaved Option Valuation"
+6. Time Based Caliberation
 
 ## Tasks Completed
 

@@ -11,8 +11,8 @@ from scipy import optimize
 from time import time
 
 
-data = pd.read_csv('../../data/ProcessedData/SortedOptions.csv').head(50)
-
+data = pd.read_csv('../../data/ProcessedData/SortedOptions.csv').shift()[20000:20050]
+print(data)
 def timer(func):
     def wrapperFunction(*args, **kwargs):
         t1 = time()
@@ -26,6 +26,7 @@ def timer(func):
 @timer
 def error_function(x):
     error = 10
+    
     kappa, theta, lamda, rho, V_0 = [param for param in x]
     OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
     if(lamda**2 < 2 * kappa * theta ):

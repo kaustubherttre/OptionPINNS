@@ -25,15 +25,19 @@ def timer(func):
 
 @timer
 def error_function(x):
-    
+    error = 10
     kappa, theta, lamda, rho, V_0 = [param for param in x]
     OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
-    print(OptimParams)
-    ModelParams = {"S":data["S"], "K": data["K"], "T": data["T"], "r": data["r"], "time_iters": 10000, "int_iters": 1000}
-    error = np.sum((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
-    print(error)
-    return error
-
+    if(lamda**2 < 2 * kappa * theta ):
+        OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
+        print(OptimParams)
+        print(" No Voilation")
+        ModelParams = {"S":data["S"], "K": data["K"], "T": data["T"], "r": data["r"], "time_iters": 10000, "int_iters": 1000}
+        error = np.sum((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
+        print(error)
+        return error
+    else:
+        print("Voilation")
 
 if __name__ == '__main__':
     

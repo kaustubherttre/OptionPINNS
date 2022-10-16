@@ -1,5 +1,18 @@
 import pandas as pd 
-
+import plotly.express as px
+import math
+import matplotlib.pyplot as plt
+import time
+import datetime
+import plotly.express as px
+import plotly.graph_objects as go
+def convert_year_into_days(df):
+    for index, row in df.iterrows():
+        year_in_sec = row['T'] * 31536000.00
+        days = math.ceil(year_in_sec * 1.15741e-5)
+        df.loc[index, "Days"] = days
+        print(index)
+    return df
 
 if __name__ == "__main__":
     # data = pd.read_csv("ProcessedData/PureOptionData.csv")
@@ -12,4 +25,22 @@ if __name__ == "__main__":
 
     #remove values from main ds of testing ds
     
-    pd.read_csv("ProcessedData/SortedOptions.csv").sort_values(by = 'T').to_csv("TimeSorted.csv")
+    # df = pd.read_csv("ProcessedData/TimeSorted.csv")
+    # for index, row in df.iterrows():
+    #     df.loc[index, "Moneyness"] = row["S"]/row["K"]
+    # df.to_csv("TimeSorted.csv")
+    # fig = px.bar(df, x = df.index, y = ['Moneyness'])
+    # fig.show()
+    # print(df)
+    df = pd.read_csv("ProcessedData/DaysAddedOptions.csv")
+    fig = px.scatter(df, x = df['Days'], y =  df['Moneyness'])
+    fig.add_hline(y=1.1)
+    fig.add_hline(y=1.2)
+    fig.add_hline(y=1.3)
+    fig.show()
+    fig.write_image('../img/EngineCriteria.png')
+
+
+
+
+    #print(convert_year_into_days(df))

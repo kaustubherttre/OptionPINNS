@@ -39,7 +39,7 @@ class HestonOptimization:
         x0 = [param["x0"] for key, param in params.items()]
         print(error_function(x0))
         boundary = [param['lb'] for key, param in params.items()]
-        result = minimize(error_function, x0, tol = 1e-3, method = 'SLSQP', options = {'maxiter': 1e4}, bounds = boundary)
+        result = minimize(error_function, x0, tol = 1e-2, method = 'SLSQP', options = {'maxiter': 1e3}, bounds = boundary)
         self.res = result.x
 # data = pd.read_csv('../../data/ProcessedData/TimeSorted.csv')[:100]
 # print(data)

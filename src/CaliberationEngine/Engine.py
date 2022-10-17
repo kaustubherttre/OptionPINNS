@@ -19,20 +19,17 @@ def GetOptimizedParams(data, c):
             model = HestonOptimization(data.head(100))
             result = model.res
             json_data[i] = result
+        print(json_data)
     return json_data
 
-
-
-        
-        
-        
-
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv').head(101)
+    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
     print(data)
     classes = data['Class'].unique()
-    print(len(data.loc[data['Class'] == 'C11']))
-    print(GetOptimizedParams(data, classes))
+    dictionary = GetOptimizedParams(data, classes)
+    json_object = json.dumps(dictionary, indent=4)
+    with open("sample.json", "w") as outfile:
+        outfile.write(json_object)
     
     
 

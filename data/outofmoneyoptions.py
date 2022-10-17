@@ -32,14 +32,19 @@ if __name__ == "__main__":
     # fig = px.bar(df, x = df.index, y = ['Moneyness'])
     # fig.show()
     # print(df)
-    df = pd.read_csv("ProcessedData/DaysAddedOptions.csv")
-    fig = px.scatter(df, x = df['Days'], y =  df['Moneyness'])
-    fig.add_hline(y=1.1)
-    fig.add_hline(y=1.2)
-    fig.add_hline(y=1.3)
-    fig.show()
-    fig.write_image('../img/EngineCriteria.png')
-
+    df =  pd.read_csv("ProcessedData/DaysAddedOptions.csv")
+    s_df = pd.read_csv("ProcessedData/DaysAddedOptions.csv").sample(1000)
+    newdf = pd.concat([df, s_df,]).drop_duplicates(keep=False)
+    print(len(s_df), len(df), len(newdf))
+    newdf.to_csv('Training_Engine.csv') 
+    s_df.to_csv('Testing_Enigne.csv')
+    # fig = px.scatter(df, x = df['Days'], y =  df['Moneyness'])
+    # fig.add_hline(y=1.1)
+    # fig.add_hline(y=1.2)
+    # fig.add_hline(y=1.3)
+    # fig.show()
+    # fig.write_image('../img/EngineCriteria.png')
+    
 
 
 

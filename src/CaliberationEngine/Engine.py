@@ -9,14 +9,9 @@ def GetOptimizedParams(data, c):
     json_data = {}
     for i in c:
         class_data = data.loc[data['Class'] == i]
-        if(len(class_data) < 100):
-            print('<100', i)
-            model = HestonOptimization(data)
-            result = model.res
-            json_data[i] = result
-        elif(len(class_data) > 100):
+        if(len(class_data) > 100 and i not in ['C11', 'C14', 'C13', 'C21', 'C12']):
             print('>100', i)
-            model = HestonOptimization(data.head(100))
+            model = HestonOptimization(class_data.head(100))
             result = model.res
             json_data[i] = result
         print(json_data)

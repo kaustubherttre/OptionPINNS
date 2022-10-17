@@ -17,7 +17,10 @@ def applyHeston(data):
     
     for index, row in data.iterrows():
          ModelParams = {"S": row["S"], "K": row["K"],  "T": row["T"], "r": row["r"], "time_iters": 1000, "int_iters": 100}
-         params = [2.973854  ,  0.86279981,  1.        , -1.        ,  0.07486076] #time caliberated
+         params = [
+        9.92183228e-01,  1.55534823e-01,  1.00000000e-02, -7.96029909e-14,
+        1.00000000e-03
+    ] #time caliberated
 
          OptimParams = {"kappa": params[0], "theta":params[1], "lamda":params[2], "rho": params[3], "V_0": params[4]}
          #OptimParams = {'kappa': 1.792843050998499, 'theta': 0.31552779855223334, 'lamda': 0.022022107211539868, 'rho': -0.5553479504516986, 'V_0': 0.0892181302056993}
@@ -25,7 +28,7 @@ def applyHeston(data):
          #OptimParams = {"kappa": 2.15843823, "theta": 0.31658342, "lamda": 0.02438772, "rho": -0.5755087, "V_0":  0.1} #with sample
          #OptimParams = {"kappa": 0.08307242, "theta": 0.31297369, "lamda": 0.00954286, "rho": -0.0567487, "V_0":  3.32918947} #jac
          #OptimParams = {"kappa": 2.18046836, "theta": 0.30888159, "lamda": 0.02454651, "rho": -0.58138519, "V_0": 0.09985972} #tail
-         
+         #OptimParams = {'kappa': 2.1791549391203597, 'theta': 0.30319371690018126, 'lamda': 0.024562356298730856, 'rho': -0.5810309241351336, 'V_0': 0.09879741471092589}
          Hestonmodel = HestonSA(ModelParams, OptimParams)
          data.loc[index, "HestonPrice"] = Hestonmodel.final_price
          data.loc[index, "Error_in_Heston"] = row["Price"] - Hestonmodel.final_price
@@ -35,8 +38,8 @@ def applyHeston(data):
     return data
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/TimeSorted.csv')
-    twoRowData = data[0:100]
+    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
+    twoRowData = data.loc[data['Class']== 'C72'][:100]
     print(data.columns)
     print(twoRowData[["Price", 'T', 'S']])
     error = []

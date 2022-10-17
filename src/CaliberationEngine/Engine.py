@@ -9,7 +9,7 @@ def GetOptimizedParams(data, c):
     json_data = {}
     for i in c:
         class_data = data.loc[data['Class'] == i]
-        if(i in ['C24','C34','C44','C53','C54', 'C64']):
+        if(i in ['C34','C44','C53','C54', 'C64']):
             print('>100', i)
             model = HestonOptimization(class_data.head(100))
             result = model.res

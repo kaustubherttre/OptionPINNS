@@ -25,9 +25,19 @@ def getParamsFromClass(data):
     return data
     
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
-    mydata = data.loc[data['Class'] == 'C22'][700:800]
-    print(mydata)
-    final_data = getParamsFromClass(mydata)
-    fig = px.scatter(final_data, x=final_data.index, y=['HestonPrice','Price','Error_in_Heston'], title='Optimization')
+    data = pd.read_csv('../../data/ProcessedData/ClassAdded_test.csv')
+    final_data = getParamsFromClass(data)
+    df = final_data[final_data['HestonPrice'].notna()]
+    classes = df['Class'].unique()
+    error_dict = []
+    for c in classes:
+        my_df = df.loc[df['Class']==c]
+        error = my_df['Error_in_Heston'].sum()/len(my_df['Error_in_Heston'])
+        max_error = my_df['Error_in_Heston'].max()
+        min_error = my_df['Error_in_Heston'].min()
+        error_dict.append({'Class': c, 'Error': error, 'MaxError': max_error, 'MinError': min_error})
+
+    error_df = pd.DataFrame(error_dict).sort_values('Class', axis = 0)
+    print(error_df)
+    fig = px.bar(error_df, x = 'Class', y = 'Error', color = 'MaxError', barmode="group")
     fig.show()

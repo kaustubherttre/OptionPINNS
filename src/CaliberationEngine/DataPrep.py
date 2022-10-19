@@ -94,5 +94,5 @@ def classification(data):
         data.loc[index, 'Class'] = f_c
     return data
 if __name__ == '__main__':
-    df = pd.read_csv("../../data/ProcessedData/Training_Engine.csv")
-    classification(df).to_csv('ClassAdded.csv')
+    df = pd.read_csv("../../data/ProcessedData/Testing_Enigne.csv")
+    classification(df).to_csv('ClassAdded_test.csv')

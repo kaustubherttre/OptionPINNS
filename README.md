@@ -11,6 +11,8 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 5. Lewis' "Well Behaved Option Valuation"
 6. Time Based Caliberation
 7. Gaussian Regression model
+8. Julia Backend for Heston Function and PINNs
+
 
 ## Tasks Completed
 

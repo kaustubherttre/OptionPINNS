@@ -11,6 +11,15 @@ HestonSA(ModelParams, OptimParams)
 PATH = "data/ProcessedData/"
 FILENAME = "ClassAdded.csv"
 function getData(PATH,FILENAME)
-    df = CSV.read(string(PATH,FILENAME), DataFrame)
+    return CSV.read(string(PATH,FILENAME), DataFrame)
 end
-getData(PATH,FILENAME)
+df = getData(PATH,FILENAME)
+
+function error_function(x)
+
+    κ, θ, λ, ρ, V_0 = [param for param in x]
+    OptimParams = Dict("kappa" => κ, "theta" => θ, "lamda" => λ, "rho" => ρ, "V_0" => V_0)
+    return df
+end
+array = [9.92183228e-01,  1.55534823e-01,  1.00000000e-02, -7.96029909e-14, 1.00000000e-03]
+error_function(array)

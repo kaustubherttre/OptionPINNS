@@ -1,6 +1,6 @@
 from math import *
-import scipy.stats as ss 
-import numpy as np 
+import scipy.stats as ss
+import numpy as np
 import matplotlib.pyplot as plt
 # Defining two dicts here: ModelParams include strike, underlying, time etc. OptimParams includes mean reversion speed, corr coff etc
 #Solving this with little bit numerical, using discretization(spell check) for complex integral
@@ -44,9 +44,8 @@ class HestonSA:
             return exp_1, exp_2
 
         def d_var(rho, lamda, u, i, kappa):
-            aa = (rho*lamda*u*i) - kappa 
+            aa = (rho*lamda*u*i) - kappa
             bb = (lamda**2)*(u*i+u**2)
-            #print("Inside dvar", np.sqrt(aa**2 + bb))
             return  np.sqrt(aa**2 + bb)
 
         def g_var(kappa, rho, lamda, i, u, d):
@@ -62,4 +61,3 @@ class HestonSA:
             phi = p*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
             return phi
         self.final_price = heston_price(self)
-

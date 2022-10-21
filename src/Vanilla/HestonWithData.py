@@ -3,6 +3,8 @@ import pandas as pd
 import sys
 import matplotlib.pyplot as plt
 import plotly.express as px
+from julia import Main
+
 
 
 def getParams(data):
@@ -14,7 +16,7 @@ def getParams(data):
 def applyHeston(data):
     a = []
     b = []
-    
+    Main.include('HestonSA.jl')
     for index, row in data.iterrows():
          ModelParams = {"S": row["S"], "K": row["K"],  "T": row["T"], "r": row["r"], "time_iters": 1000, "int_iters": 100}
          params = [
@@ -29,25 +31,24 @@ def applyHeston(data):
          #OptimParams = {"kappa": 0.08307242, "theta": 0.31297369, "lamda": 0.00954286, "rho": -0.0567487, "V_0":  3.32918947} #jac
          #OptimParams = {"kappa": 2.18046836, "theta": 0.30888159, "lamda": 0.02454651, "rho": -0.58138519, "V_0": 0.09985972} #tail
          #OptimParams = {'kappa': 2.1791549391203597, 'theta': 0.30319371690018126, 'lamda': 0.024562356298730856, 'rho': -0.5810309241351336, 'V_0': 0.09879741471092589}
-         Hestonmodel = HestonSA(ModelParams, OptimParams)
-         data.loc[index, "HestonPrice"] = Hestonmodel.final_price
-         data.loc[index, "Error_in_Heston"] = row["Price"] - Hestonmodel.final_price
+         #Hestonmodel = HestonSA(ModelParams, OptimParams)
+         #final_price = Hestonmodel.final_price
+         final_price = Main.HestonSA(ModelParams, OptimParams)
+         data.loc[index, "HestonPrice"] = final_price
+         data.loc[index, "Error_in_Heston"] = row["Price"] - final_price
          data.loc[index, "Diff"] = row["S"] - row["K"]
          print(index)
 
     return data
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
-    twoRowData = data.loc[data['Class']== 'C72'][:100]
-    print(data.columns)
-    print(twoRowData[["Price", 'T', 'S']])
-    error = []
+    data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')[:100]
+    twoRowData = data
     final_data = applyHeston(twoRowData)
     print(final_data)
-    print(final_data[["HestonPrice", "S","Moneyness", "K", "Error_in_Heston", "T"]])
-    fig = px.line(final_data, x=final_data.index, y=['HestonPrice','Price','Error_in_Heston'], title='Optimization')
-    fig.show()
+    # print(final_data[["HestonPrice", "S","Moneyness", "K", "Error_in_Heston", "T"]])
+    # fig = px.line(final_data, x=final_data.index, y=['HestonPrice','Price','Error_in_Heston'], title='Optimization')
+    # fig.show()
     # plt.plot(final_data["HestonPrice"], label = "hestonPrice")
     # plt.plot(final_data["Price"], label = "OptionPrice")
     # plt.plot(final_data["Error_in_Heston"], label = "Error")

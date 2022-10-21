@@ -24,8 +24,8 @@ def applyHeston(data):
         1.00000000e-03
     ] #time caliberated
 
-         OptimParams = {"kappa": params[0], "theta":params[1], "lamda":params[2], "rho": params[3], "V_0": params[4]}
-         #OptimParams = {'kappa': 1.792843050998499, 'theta': 0.31552779855223334, 'lamda': 0.022022107211539868, 'rho': -0.5553479504516986, 'V_0': 0.0892181302056993}
+         #OptimParams = {"kappa": params[0], "theta":params[1], "lamda":params[2], "rho": params[3], "V_0": params[4]}
+         OptimParams = {'kappa': 1.792843050998499, 'theta': 0.31552779855223334, 'lamda': 0.022022107211539868, 'rho': -0.5553479504516986, 'V_0': 0.0892181302056993}
          #OptimParams = {"kappa": 1.58112203, "theta": 0.518175, "lamda": 1, "rho": -1, "V_0":  0.06621402} #x without sample
          #OptimParams = {"kappa": 2.15843823, "theta": 0.31658342, "lamda": 0.02438772, "rho": -0.5755087, "V_0":  0.1} #with sample
          #OptimParams = {"kappa": 0.08307242, "theta": 0.31297369, "lamda": 0.00954286, "rho": -0.0567487, "V_0":  3.32918947} #jac

@@ -9,6 +9,8 @@ import pandas as pd
 from scipy.optimize import minimize, broyden2, broyden1
 from scipy import optimize
 from time import time
+from julia import Main
+Main.include('../Vanilla/HestonSA.jl')
 
 
 class HestonOptimization:
@@ -18,8 +20,6 @@ class HestonOptimization:
             error = 10
             
             kappa, theta, lamda, rho, V_0 = [param for param in x]
-            OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
-        
             OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
             print(OptimParams)
             print(" No Voilation")

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 # This is the solution the is present in Gatheral
 class HestonSA:
     def __init__(self, ModelParams, OptimParams):
+        
         self.S = ModelParams["S"] # Stock
         self.K = ModelParams["K"] # strike
         self.T = ModelParams["T"] #time to maturity (yrs)
@@ -61,3 +62,4 @@ class HestonSA:
             phi = p*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
             return phi
         self.final_price = heston_price(self)
+        print(self.final_price)

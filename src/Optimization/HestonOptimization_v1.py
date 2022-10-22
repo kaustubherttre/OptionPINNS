@@ -17,32 +17,34 @@ class HestonOptimization:
     def __init__(self, data):
         self.data = data
         def error_function(x):
-            error = 10
+            error = []
             
             kappa, theta, lamda, rho, V_0 = [param for param in x]
             OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
-            print(OptimParams)
             print(" No Voilation")
-            ModelParams = {"S":data["S"], "K": data["K"], "T": data["T"], "r": data["r"], "time_iters": 10000, "int_iters": 1000}
-            error = np.sum((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
-            print(error)
-            return error
+            for index, rows in data.iterrows():
+                ModelParams = {"S":data.loc[index, "S"].item(), "K": data.loc[index,"K"].item(), "T": data.loc[index,"T"].item(), "r": data.loc[index,"r"].item(), "time_iters": 10000, "int_iters": 1000}
+                error.append((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
+                if(len(error) == len(data)):
+                    print(np.sum(error))
+                    return np.sum(error)
         params = {
-            "kappa":{"x0": 3, "lb": [1e-3, 5]},
-            "theta":{"x0": 0.05, "lb": [1e-3, 1]},
-            "lamda":{"x0": 0.03, "lb": [1e-2, 1]},
-            "rho":{"x0": -0.8, "lb": [-1, 0]},
-            "V_0":{"x0": 0.1, "lb": [1e-3, 0.1]},
+            "kappa":{"x0": 3.0, "lub": [1e-3, 5.0]},
+            "theta":{"x0": 0.05, "lub": [1e-3, 1.0]},
+            "lamda":{"x0": 0.03, "lub": [1e-2, 1.0]},
+            "rho":{"x0": -0.8, "lub": [-1, 0.0]},
+            "V_0":{"x0": 0.1, "lub": [1e-3, 0.1]},
         }
         x0 = [param["x0"] for key, param in params.items()]
         print(error_function(x0))
-        boundary = [param['lb'] for key, param in params.items()]
+        boundary = [param['lub'] for key, param in params.items()]
         result = minimize(error_function, x0, tol = 1e-2, method = 'SLSQP', options = {'maxiter': 1e3}, bounds = boundary)
-        self.res = result.x
+        self.res = result
 
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
-    class_data = data.loc[data['Class'] == 'C14']
+    class_data = data.loc[data['Class'] == 'C11'][:10]
+    print(class_data)
     model = HestonOptimization(class_data)
     print(model.res)
 

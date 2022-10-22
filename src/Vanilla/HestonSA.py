@@ -62,4 +62,3 @@ class HestonSA:
             phi = p*np.exp(exp_2*g_num + V_0*g_num*(1-np.exp(-d*T))/(1-g*np.exp(-d*T))/lamda**2)
             return phi
         self.final_price = heston_price(self)
-        print(self.final_price)

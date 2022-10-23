@@ -18,16 +18,15 @@ class HestonOptimization:
         self.data = data
         def error_function(x):
             error = []
-            
             kappa, theta, lamda, rho, V_0 = [param for param in x]
             OptimParams = {"kappa": kappa, "theta": theta, "lamda": lamda, "rho": rho, "V_0": V_0  }
-            print(" No Voilation")
             for index, rows in data.iterrows():
-                ModelParams = {"S":data.loc[index, "S"].item(), "K": data.loc[index,"K"].item(), "T": data.loc[index,"T"].item(), "r": data.loc[index,"r"].item(), "time_iters": 10000, "int_iters": 1000}
-                error.append((data["Price"] - HestonSA(ModelParams, OptimParams).final_price)**2/ len(data["Price"]))
+                ModelParams = {"S":data.loc[ index,"S"].item(), "K": data.loc[index,"K"].item(), "T": data.loc[index,"T"].item(), "r": data.loc[index,"r"].item(), "time_iters": 10000, "int_iters": 1000}
+                heston_price = HestonSA(ModelParams, OptimParams).final_price
+                error.append((data.loc[ index, "Price"] - heston_price)**2 /len(data))
                 if(len(error) == len(data)):
                     print(np.sum(error))
-                    return np.sum(error)
+                    return(np.sum(error))
         params = {
             "kappa":{"x0": 3.0, "lub": [1e-3, 5.0]},
             "theta":{"x0": 0.05, "lub": [1e-3, 1.0]},
@@ -44,7 +43,6 @@ class HestonOptimization:
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
     class_data = data.loc[data['Class'] == 'C11'][:10]
-    print(class_data)
     model = HestonOptimization(class_data)
     print(model.res)
 

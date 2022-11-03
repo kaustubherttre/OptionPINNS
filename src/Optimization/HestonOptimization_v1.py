@@ -42,7 +42,7 @@ class HestonOptimization:
 
 if __name__ == '__main__':
     data = pd.read_csv('../../data/ProcessedData/ClassAdded.csv')
-    class_data = data.loc[data['Class'] == 'C11'][:10]
+    class_data = data.loc[data['Class'] == 'C11'].sample(200)
     model = HestonOptimization(class_data)
     print(model.res)
 

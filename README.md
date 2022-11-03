@@ -4,14 +4,15 @@ This repository includes solving Option Pricing Models using Vanilla Python, min
 
 ## TODO
 
-1. Filtering and Caliberation
-2. Full Caliberation Testing
+1. Filtering and Caliberation :: DONE
+2. Full Caliberation Testing :: DONE
 3. Penalty based Optimization
 4. Feller Condition implementation :: Done, testing 
 5. Lewis' "Well Behaved Option Valuation"
-6. Time Based Caliberation
-7. Gaussian Regression model
-8. Julia Backend for Heston Function and PINNs
+6. Time Based Caliberation :: Not worth it
+7. Gaussian Regression model :: Need to read
+8. Julia Backend for Heston Function and PINNs :: DONE FOR HESTON
+9. Adding new piece-wise optimization scheme
 
 
 ## Tasks Completed

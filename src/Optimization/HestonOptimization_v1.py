@@ -10,6 +10,8 @@ from scipy.optimize import minimize, broyden2, broyden1
 from scipy import optimize
 from time import time
 from julia import Main
+from julia.api import Julia
+jl = Julia(compiled_modules=False)
 Main.include('../Vanilla/HestonSA.jl')
 
 

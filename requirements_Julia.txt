@@ -1,2 +1,3 @@
-XLSX
-DataFrames
+Pkg.add(["XLSX",
+"DataFrames",
+"CSV"])
